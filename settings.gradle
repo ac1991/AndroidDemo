@@ -1,1 +1,2 @@
-include ':app', ':ipccommunication'
+include ':app', ':ipccommunication', ':commandutils'
+project(':commandutils').projectDir = new File('utils/commandutils')
