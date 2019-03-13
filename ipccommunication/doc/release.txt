@@ -1,0 +1,6 @@
+本模块主要用于测试进程间通信案例
+
+bind_and_service:
+此案例不能用于跨进程通信，只能用于应用前台和后台的通信。
+binder是一个中间件，用于activity和service之间的双向通信。
+service返回数据需要activity注册回调接口
