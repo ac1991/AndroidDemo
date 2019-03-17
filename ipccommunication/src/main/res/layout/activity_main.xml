@@ -12,4 +12,9 @@
         android:layout_height="wrap_content"
         android:text="跳转bind——Service"/>
 
+    <Button
+        android:id="@+id/skipAIDLService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="跳转AIDL服务"/>
 </LinearLayout>

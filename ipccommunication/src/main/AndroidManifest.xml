@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".binder_and_service.BindServiceActivity"></activity>
+        <activity android:name=".aidl.AIDLActivity"></activity>
+        <activity android:name=".binder_and_service.BindServiceActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,7 +19,16 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".binder_and_service.BindService"/>
+        <service android:name=".binder_and_service.BindService" />
+        <!--exported必须字段，表示允许其它进程访问-->
+        <service android:name="com.wushengqi.ipccommunication.aidl.AIDLService"
+            android:exported="true"
+            android:process=":ceshi">
+            <intent-filter>
+                <action android:name="com.android.aidl"></action>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
