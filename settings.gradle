@@ -1,2 +1,2 @@
-include ':app', ':ipccommunication', ':commandutils', ':protocolbuffer'
+include ':app', ':ipccommunication', ':commandutils', ':protocolbuffer', ':jarlibrary'
 project(':commandutils').projectDir = new File('utils/commandutils')
