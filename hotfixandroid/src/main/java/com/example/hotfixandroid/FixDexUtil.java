@@ -16,6 +16,7 @@ import dalvik.system.PathClassLoader;
 /**
  *@author Minuit
  *@time 2018/6/25 0025 15:50
+ * https://www.jianshu.com/p/9e67e3eb129b
  */
 public class FixDexUtil {
 
