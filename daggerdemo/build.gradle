@@ -1,10 +1,12 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
 
+
     defaultConfig {
-        minSdkVersion 19
+        applicationId "com.example.daggerdemo"
+        minSdkVersion 20
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -23,23 +25,14 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-//    implementation files('libs/jarlibrary.jar')
+
+    implementation 'com.google.dagger:dagger:2.11'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
 }
-
-//一个比较好的链接：https://www.cnblogs.com/xinaixia/p/7660173.html
-task makejar(type: Copy){
-    delete 'build/jarlibrary.jar' //删除之前的旧jar包
-
-    from('build/intermediates/packaged-classes/release/') //从这个目录下取出默认jar包
-    into('libs/') //将jar包输出到指定目录下
-    include('classes.jar')
-    exclude("BuildConfig.class")
-    rename('classes.jar', 'jarlibrary.jar') //自定义jar包的名字
-}
-
-makejar.dependsOn(build)
