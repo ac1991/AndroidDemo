@@ -1,7 +1,7 @@
 package com.wushengqi.androiddemo;
 
+import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.hotfixandroid.BugDemo;
 import com.example.hotfixandroid.FixDexUtil;
 import com.wushengqi.androiddemo.hotfix.FileUtils;
+import com.wushengqi.androiddemo.hotfix.TestHotfix;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +21,7 @@ import java.lang.reflect.Method;
 import dalvik.system.DexClassLoader;
 import dalvik.system.PathClassLoader;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +43,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.bugBtn:
 
-                PathClassLoader pathClassLoader = (PathClassLoader) getClassLoader();
-//                BugDemo.test(getApplicationContext());
-//                getClassDemo();
-//                BugDemo.test(getApplicationContext());
-                BugDemo bugDemo = new BugDemo();
-                bugDemo.bug(getApplicationContext());
+//                PathClassLoader pathClassLoader = (PathClassLoader) getClassLoader();
+////                BugDemo.test(getApplicationContext());
+////                getClassDemo();
+////                BugDemo.test(getApplicationContext());
+                TestHotfix testHotfix = new TestHotfix();
+                testHotfix.loadFix(getApplicationContext());
                 break;
             case R.id.fixBtn:
                 fix();
@@ -55,6 +56,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                FixDexUtil.loadFixedDex(getApplicationContext(), new File());
                 break;
         }
+    }
+
+    public void sss(){
+        BugDemo bugDemo = new BugDemo();
+        bugDemo.bug(getApplicationContext());
     }
 
     public void fix(){
@@ -66,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onFinish() {
                 FixDexUtil.loadFixedDex(getApplicationContext(), new File(path));
+                sss();
 //                        FixDexUtil.hotFix2(getApplicationContext(), new File(path));
             }
         });
@@ -79,8 +86,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 File.separator + "optimize_dex";
         DexClassLoader dexClassLoader = new DexClassLoader(path,
                 optimizeDir,null,getClassLoader());
+
+
         try{
-            Class <?> clazz = dexClassLoader.loadClass("com.example.hotfixandroid"+".BugDemo");
+            Class <?> clazz = getClassLoader().loadClass("com.example.hotfixandroid"+".BugDemo");
             Object obj = clazz.newInstance() ;
             Class [] params = new Class[2];
             params[0]= Integer.TYPE;

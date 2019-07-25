@@ -1,2 +1,2 @@
-include ':app', ':ipccommunication', ':commandutils', ':protocolbuffer', ':jarlibrary', ':daggerdemo', ':hotfix', ':hotfixandroid'
+include ':app', ':ipccommunication', ':commandutils', ':protocolbuffer', ':jarlibrary', ':daggerdemo', ':hotfix', ':hotfixandroid', ':unittestdemo', ':https'
 project(':commandutils').projectDir = new File('utils/commandutils')
