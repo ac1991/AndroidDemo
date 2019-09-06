@@ -48,8 +48,8 @@ public class AIDLService extends Service {
         public void registerAIDLCallback(AIDLCallback aidlCallback) throws RemoteException {
             Logger.d(TAG, "remote add AIDLCallback:"+ aidlCallback.toString());
             if (aidlCallback != null) {
-                AIDLService.this.aidlCallback = aidlCallback;
-//                mCallbacks.register(aidlCallback);
+//                AIDLService.this.aidlCallback = aidlCallback;
+                mCallbacks.register(aidlCallback);
             }
         }
 
@@ -57,10 +57,10 @@ public class AIDLService extends Service {
         public void unregisterAIDLCallback(AIDLCallback aidlCallback) throws RemoteException {
             Logger.d(TAG, "remote AIDLCallback:"+ aidlCallback.toString());
             Logger.d(TAG, "service AIDLCallback:"+ AIDLService.this.aidlCallback.toString());
-            if ( AIDLService.this.aidlCallback == aidlCallback){
-//                mCallbacks.unregister(aidlCallback);
-                AIDLService.this.aidlCallback = null;
-            }
+//            if ( AIDLService.this.aidlCallback == aidlCallback){
+                mCallbacks.unregister(aidlCallback);
+//                AIDLService.this.aidlCallback = null;
+//            }
         }
     };
 
