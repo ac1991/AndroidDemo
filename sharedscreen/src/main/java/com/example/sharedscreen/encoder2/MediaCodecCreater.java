@@ -29,6 +29,7 @@ import static android.media.MediaExtractor.MetricsConstants.MIME_TYPE;
  * 参考 1.https://www.jianshu.com/p/9512defaa8c1
  *      2.http://androidxref.com/4.4.2_r2/xref/cts/tests/tests/media/src/android/media/cts/EncodeVirtualDisplayTest.java#approxEquals
  *      3.https://www.cnblogs.com/hrhguanli/p/5043610.html
+ *      4.android录屏的三种方案 https://www.jianshu.com/p/8b313692ac85
  */
 public class MediaCodecCreater extends HandlerThread {
 
@@ -246,8 +247,7 @@ public class MediaCodecCreater extends HandlerThread {
     volatile boolean mInputDone;
 
     /**
-     * 154     * Prepares the encoder, decoder, and virtual display.
-     * 155
+      * Prepares the encoder, decoder, and virtual display.
      */
     private void encodeVirtualDisplayTest() {
         MediaCodec encoder = null;
@@ -266,14 +266,18 @@ public class MediaCodecCreater extends HandlerThread {
 
             encoder = MediaCodec.createEncoderByType(MIME_TYPE);
             encoder.configure(encoderFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
+            //创建输入端的surface
             Surface inputSurface = encoder.createInputSurface();
+            //开始编码
             encoder.start();
 
             // Create a virtual display that will output to our encoder.
+            //创建一个虚拟显示，将输出到我们的编码器。
             virtualDisplay = mDisplayManager.createVirtualDisplay(NAME,
                     WIDTH, HEIGHT, DENSITY, inputSurface, 0);
 
             // We also need a decoder to check the output of the encoder.
+            //我们还需要一个解码器来检查编码器的输出。
             decoder = MediaCodec.createDecoderByType(MIME_TYPE);
             MediaFormat decoderFormat = MediaFormat.createVideoFormat(MIME_TYPE, WIDTH, HEIGHT);
             outputSurface = new OutputSurface(WIDTH, HEIGHT);
@@ -285,10 +289,12 @@ public class MediaCodecCreater extends HandlerThread {
 //            new ColorSlideShow(virtualDisplay.getDisplay()).start();
 
             // Record everything we can and check the results.
+            //记录下我们能做的一切并检查结果。
             doTestEncodeVirtual(encoder, decoder, outputSurface);
 
         } catch (IOException e) {
             e.printStackTrace();
+            Log.d(TAG, e.getMessage());
         } finally {
             if (VERBOSE) Log.d(TAG, "releasing codecs, surfaces, and virtual display");
             if (virtualDisplay != null) {
@@ -309,8 +315,7 @@ public class MediaCodecCreater extends HandlerThread {
     }
 
     /**
-     * 214     * Drives the encoder and decoder.
-     * 215
+     * Drives the encoder and decoder.
      */
     private void doTestEncodeVirtual(MediaCodec encoder, MediaCodec decoder,
                                      OutputSurface outputSurface) {
