@@ -74,10 +74,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resuleData) {
         if (requestCode == SCREEN_REQUEST_CODE && resultCode == Activity.RESULT_OK){
-
+            projection = projectManager.getMediaProjection(resultCode, resuleData);
         }
 
-//        projection = projectManager.getMediaProjection(resultCode, resuleData);
+
 //        display = projection.createVirtualDisplay(name, width, height, dpi, flags, surface, callback, handler);
     }
 

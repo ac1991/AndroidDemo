@@ -7,8 +7,10 @@ import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
 import android.media.MediaFormat;
 import android.media.MediaMuxer;
+import android.media.projection.MediaProjection;
 import android.opengl.GLES20;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -36,7 +38,7 @@ public class MediaCodecCreater extends HandlerThread {
     private static final String TAG = "EncodeVirtualTest";
     private static final boolean VERBOSE = false;           // lots of logging
     private static final boolean DEBUG_SAVE_FILE = false;   // save copy of encoded movie
-    private static final String DEBUG_FILE_NAME_BASE = "/sdcard/test.";
+    private static final String DEBUG_FILE_NAME_BASE = Environment.getExternalStorageState() + "/vedioTest";//"/sdcard/test.";
 
     private final ByteBuffer mPixelBuf = ByteBuffer.allocateDirect(4);
 
@@ -79,6 +81,8 @@ public class MediaCodecCreater extends HandlerThread {
 
     private boolean stop = false;
 
+    private MediaProjection mMediaProjection;
+
     //子线程的handler
     private Handler mediaCodecHandler = new Handler(this.getLooper(), new MediaCodecCallback());
 
@@ -91,8 +95,9 @@ public class MediaCodecCreater extends HandlerThread {
     });
 
 
-    public MediaCodecCreater(String name) {
+    public MediaCodecCreater(String name, MediaProjection mediaProjection) {
         super(name);
+        this.mMediaProjection = mediaProjection;
         init();
 
     }
@@ -273,8 +278,9 @@ public class MediaCodecCreater extends HandlerThread {
 
             // Create a virtual display that will output to our encoder.
             //创建一个虚拟显示，将输出到我们的编码器。
-            virtualDisplay = mDisplayManager.createVirtualDisplay(NAME,
-                    WIDTH, HEIGHT, DENSITY, inputSurface, 0);
+//            virtualDisplay = mDisplayManager.createVirtualDisplay(NAME,
+//                    WIDTH, HEIGHT, DENSITY, inputSurface, 0);
+            virtualDisplay = mMediaProjection.createVirtualDisplay(NAME, WIDTH, HEIGHT, DENSITY, 0, inputSurface, null, null);
 
             // We also need a decoder to check the output of the encoder.
             //我们还需要一个解码器来检查编码器的输出。
@@ -332,7 +338,7 @@ public class MediaCodecCreater extends HandlerThread {
         // stream, not a .mp4 file, so not all players will know what to do with it.
         FileOutputStream outputStream = null;
         if (DEBUG_SAVE_FILE) {
-            String fileName = DEBUG_FILE_NAME_BASE + WIDTH + "x" + HEIGHT + ".mp4";
+            String fileName = DEBUG_FILE_NAME_BASE + System.currentTimeMillis() + WIDTH + "x" + HEIGHT + ".mp4";
             try {
                 outputStream = new FileOutputStream(fileName);
                 Log.d(TAG, "encoded output will be saved as " + fileName);
