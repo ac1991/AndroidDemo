@@ -197,7 +197,7 @@ public class MediaCodecCreater extends HandlerThread {
         public boolean handleMessage(Message msg) {
             switch (msg.what){
                 case MSG_START:
-
+                        startRecoder();
                     break;
                 case MSG_STOP:
 
@@ -209,26 +209,34 @@ public class MediaCodecCreater extends HandlerThread {
 
     private boolean isEOS = false;
 
+    public void startRecoder(){
+
+    }
+
     //开始录制
-    public void startRecoder() {
-        mMediaCodec.start();
-        ByteBuffer[] inputByteBuffers = mMediaCodec.getInputBuffers();
-        ByteBuffer[] outputByteBuffers = mMediaCodec.getOutputBuffers();
+    private void startRecoderInternal() {
+        encodeVirtualDisplayTest();
+//        mMediaCodec.start();
+//        ByteBuffer[] inputByteBuffers = mMediaCodec.getInputBuffers();
+//        ByteBuffer[] outputByteBuffers = mMediaCodec.getOutputBuffers();
+//
+//        while (!stop) {
+//            if (!isEOS) {
+//                //返回使用有效输出的Buffer的索引，如果没有相关buffer可用，就返回-1；
+//                //如果传入的timeoutUs为0，则立马返回；如果输入Buffer可用，将等待返回。
+//                int inIndex = mMediaCodec.dequeueInputBuffer(10000);
+//
+//                if (inIndex > 0) {
+//                    ByteBuffer inByteBuffer = inputByteBuffers[inIndex];
+////                    mMediaCodec.queueInputBuffer(inIndex, 0, inByteBuffer., 0, );
+//
+//                }
+//            }
+//        }
 
-        while (!stop) {
-            if (!isEOS) {
-                //返回使用有效输出的Buffer的索引，如果没有相关buffer可用，就返回-1；
-                //如果传入的timeoutUs为0，则立马返回；如果输入Buffer可用，将等待返回。
-                int inIndex = mMediaCodec.dequeueInputBuffer(10000);
+    }
 
-                if (inIndex > 0) {
-                    ByteBuffer inByteBuffer = inputByteBuffers[inIndex];
-//                    mMediaCodec.queueInputBuffer(inIndex, 0, inByteBuffer., 0, );
-
-                }
-            }
-        }
-
+    private void stopRecoderInternal(){
 
     }
 
@@ -340,6 +348,7 @@ public class MediaCodecCreater extends HandlerThread {
         }
     }
 
+    boolean outputDone = false;
     /**
      * Drives the encoder and decoder.
      */
@@ -370,7 +379,7 @@ public class MediaCodecCreater extends HandlerThread {
 
         // Loop until the output side is done.
         boolean encoderDone = false;
-        boolean outputDone = false;
+
         while (!outputDone) {
             if (VERBOSE) Log.d(TAG, "loop");
 
