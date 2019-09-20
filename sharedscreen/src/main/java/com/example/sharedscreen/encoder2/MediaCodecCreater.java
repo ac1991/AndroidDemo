@@ -35,6 +35,9 @@ import static android.media.MediaExtractor.MetricsConstants.MIME_TYPE;
  */
 public class MediaCodecCreater extends HandlerThread {
 
+    private static final int MSG_START = 1;
+    private static final int MSG_STOP = 2;
+
     private static final String TAG = "EncodeVirtualTest";
     private static final boolean VERBOSE = false;           // lots of logging
     private static final boolean DEBUG_SAVE_FILE = false;   // save copy of encoded movie
@@ -90,6 +93,13 @@ public class MediaCodecCreater extends HandlerThread {
     private Handler mUIHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
+            switch (msg.what){
+                case MSG_START:
+                case MSG_STOP:
+                    mediaCodecHandler.sendMessage(msg);
+                    break;
+            }
+
             return false;
         }
     });
@@ -109,15 +119,17 @@ public class MediaCodecCreater extends HandlerThread {
 
     private void init() {
         try {
-            initFormat();
-            initMediaCodec();
 
-            mBufferInfo = new MediaCodec.BufferInfo();
 
-            mMediaMuxer = new MediaMuxer(mp4Path, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
-            //获取输出的format，有文档说需要直接从mediaCodec中获取，不然有问题，后期可以试试自己创建的
-            muxerIndex = mMediaMuxer.addTrack(mMediaCodec.getOutputFormat());
-        } catch (IOException e) {
+//            initFormat();
+//            initMediaCodec();
+//
+//            mBufferInfo = new MediaCodec.BufferInfo();
+//
+//            mMediaMuxer = new MediaMuxer(mp4Path, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
+//            //获取输出的format，有文档说需要直接从mediaCodec中获取，不然有问题，后期可以试试自己创建的
+//            muxerIndex = mMediaMuxer.addTrack(mMediaCodec.getOutputFormat());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -183,6 +195,14 @@ public class MediaCodecCreater extends HandlerThread {
 
         @Override
         public boolean handleMessage(Message msg) {
+            switch (msg.what){
+                case MSG_START:
+
+                    break;
+                case MSG_STOP:
+
+                    break;
+            }
             return false;
         }
     }
