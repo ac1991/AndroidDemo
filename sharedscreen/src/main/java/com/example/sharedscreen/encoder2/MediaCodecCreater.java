@@ -197,10 +197,10 @@ public class MediaCodecCreater extends HandlerThread {
         public boolean handleMessage(Message msg) {
             switch (msg.what){
                 case MSG_START:
-                        startRecoder();
+                        startRecoderInternal();
                     break;
                 case MSG_STOP:
-
+                        stopRecoderInternal();
                     break;
             }
             return false;
@@ -210,12 +210,31 @@ public class MediaCodecCreater extends HandlerThread {
     private boolean isEOS = false;
 
     public void startRecoder(){
-
+        Message message = mUIHandler.obtainMessage();
+        message.what = MSG_START;
+        mUIHandler.sendMessage(message);
     }
+
+    public void stopRecoder(){
+        Message message = mUIHandler.obtainMessage();
+        message.what = MSG_STOP;
+        mUIHandler.sendMessage(message);
+    }
+
+    private boolean started = false;
 
     //开始录制
     private void startRecoderInternal() {
-        encodeVirtualDisplayTest();
+        if (!started) {
+            outputDone = false;
+            encodeVirtualDisplayTest();
+
+            return;
+        }
+
+        if (outputDone && started){
+
+        }
 //        mMediaCodec.start();
 //        ByteBuffer[] inputByteBuffers = mMediaCodec.getInputBuffers();
 //        ByteBuffer[] outputByteBuffers = mMediaCodec.getOutputBuffers();
@@ -237,7 +256,7 @@ public class MediaCodecCreater extends HandlerThread {
     }
 
     private void stopRecoderInternal(){
-
+        outputDone = true;
     }
 
     /**
@@ -543,6 +562,8 @@ public class MediaCodecCreater extends HandlerThread {
         if (goodFrames != TEST_COLORS.length) {
             Log.e(TAG, "Found " + goodFrames + " of " + TEST_COLORS.length + " expected frames");
         }
+
+        started = false;
     }
 
     /**
