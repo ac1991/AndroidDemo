@@ -20,6 +20,8 @@ import com.example.sharedscreen.encoder.AudioEncodeConfig;
 import com.example.sharedscreen.encoder.ScreenRecorder;
 import com.example.sharedscreen.encoder.Utils;
 import com.example.sharedscreen.encoder.VideoEncodeConfig;
+import com.example.sharedscreen.encoder2.MediaCodecCreater;
+import com.example.sharedscreen.utils.MediaCodecInvocationHandlerImpl;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -27,9 +29,11 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-     MediaProjectionManager projectManager;
+    MediaProjectionManager projectManager;
 
-     private static final int SCREEN_REQUEST_CODE = 101;
+    MediaCodecCreater mediaCodecCreater = null;
+
+    private static final int SCREEN_REQUEST_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,20 +42,18 @@ public class MainActivity extends AppCompatActivity {
 
 //        ImageReader imageReader = ImageReader.newInstance(1080, 1920, PixelFormat.RGBA_8888, 3)
 
-
-        initConfig();
+        initMediaCodecCreater();
+//        initConfig();
 
         // java
-        projectManager = (MediaProjectionManager) getSystemService(
-                Context.MEDIA_PROJECTION_SERVICE);
+//        projectManager = (MediaProjectionManager) getSystemService(
+//                Context.MEDIA_PROJECTION_SERVICE);
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 代表桌面获取的intent，并使用 startActivityForResult()调用分享功能
-                Intent intent = projectManager.createScreenCaptureIntent();
-                startActivityForResult(intent, SCREEN_REQUEST_CODE);
 
+                start();
 //                start();
             }
         });
@@ -66,31 +68,35 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    MediaProjection projection;
+    MediaProjection projection = null;
     VirtualDisplay display;
 
     // startActivityForResult()的Activity复写这个接口
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resuleData) {
-        if (requestCode == SCREEN_REQUEST_CODE && resultCode == Activity.RESULT_OK){
-            projection = projectManager.getMediaProjection(resultCode, resuleData);
+        if (requestCode == SCREEN_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+//            projection = projectManager.getMediaProjection(resultCode, resuleData);
+
+            mediaCodecCreater.setMediaProjection(projection);
+            mediaCodecCreater.startRecoder();
         }
 
 
 //        display = projection.createVirtualDisplay(name, width, height, dpi, flags, surface, callback, handler);
     }
 
-    private void stop(){
-        if (mScreenRecorder != null){
-            mScreenRecorder.quit();
-        }
+    private void stop() {
+        mediaCodecCreater.stopRecoder();
 
-        if (display != null){
-//            display.setSurface(null);
-            display.release();
-            display = null;
-        }
+//        if (mScreenRecorder != null){
+//            mScreenRecorder.quit();
+//        }
+//
+//        if (display != null){
+////            display.setSurface(null);
+//            display.release();
+//            display = null;
+//        }
 
 //        if (projection != null){
 ////            projection.unregisterCallback();
@@ -100,31 +106,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ScreenRecorder mScreenRecorder;
-    private void start(){
-        File dir = Utils.getSavingDir();
-        if (!dir.exists() && !dir.mkdirs()) {
-            return;
-        }
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US);
-        final File file = new File(dir, "Screenshots-" + format.format(new Date())
-                + "-" + videoEncodeConfig.width + "x" + videoEncodeConfig.height + ".mp4");
-        Log.d("@@", "Create recorder with :" + videoEncodeConfig + " \n " + audioEncodeConfig + "\n " + file.getAbsolutePath());
+    private void start() {
+
+        mediaCodecCreater.startRecoder();
+
+        // 代表桌面获取的intent，并使用 startActivityForResult()调用分享功能
+//        Intent intent = projectManager.createScreenCaptureIntent();
+//        startActivityForResult(intent, SCREEN_REQUEST_CODE);
+
+//        File dir = Utils.getSavingDir();
+//        if (!dir.exists() && !dir.mkdirs()) {
+//            return;
+//        }
+//
+//        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US);
+//        final File file = new File(dir, "Screenshots-" + format.format(new Date())
+//                + "-" + videoEncodeConfig.width + "x" + videoEncodeConfig.height + ".mp4");
+//        Log.d("@@", "Create recorder with :" + videoEncodeConfig + " \n " + audioEncodeConfig + "\n " + file.getAbsolutePath());
 //        mScreenRecorder = newRecorder(file);
 
 //        mScreenRecorder.start();
     }
 
-    private ScreenRecorder newRecorder(File file){
-//        VirtualDisplay virtualDisplay = getOrCreateVirtualDiaplay();
-//        mScreenRecorder = new ScreenRecorder(videoEncodeConfig, audioEncodeConfig, virtualDisplay, file.getAbsolutePath());
+    private void initMediaCodecCreater() {
+//        MediaCodecInvocationHandlerImpl mediaCodecInvocationHandler = new MediaCodecInvocationHandlerImpl();
+        mediaCodecCreater = new MediaCodecCreater("recoder");//(MediaCodecCreater) mediaCodecInvocationHandler.newProxyInstance(new MediaCodecCreater("recoder"));
+        ;
+        mediaCodecCreater.start();
+        mediaCodecCreater.initHandler();
 
-        return mScreenRecorder;
+        DisplayManager displayManager = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
+        mediaCodecCreater.setmDisplayManager(displayManager);
+
     }
+
 
     private VideoEncodeConfig videoEncodeConfig = null;
     private AudioEncodeConfig audioEncodeConfig = null;
-    private void initConfig(){
+
+    private void initConfig() {
         int width = 1080;
         int height = 1920;
         int framerate = 120;
@@ -134,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         profileLevel.profile = MediaCodecInfo.CodecProfileLevel.AVCProfileBaseline;
         profileLevel.level = MediaCodecInfo.CodecProfileLevel.AVCLevel1;
 
-        videoEncodeConfig = new VideoEncodeConfig(width, height, bitrate, framerate, iframe,"OMX.google.h264.encoder",MediaFormat.MIMETYPE_VIDEO_AVC, profileLevel);
+        videoEncodeConfig = new VideoEncodeConfig(width, height, bitrate, framerate, iframe, "OMX.google.h264.encoder", MediaFormat.MIMETYPE_VIDEO_AVC, profileLevel);
 
 
         int audioBitrate = 80;

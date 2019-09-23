@@ -171,6 +171,7 @@ class OutputSurface implements SurfaceTexture.OnFrameAvailableListener {
 
     /**
      * Discard all resources held by this class, notably the EGL context.
+     * 丢弃该类持有的所有资源，特别是EGL上下文。
      */
     public void release() {
         if (mEGLDisplay != EGL14.EGL_NO_DISPLAY) {
@@ -197,6 +198,7 @@ class OutputSurface implements SurfaceTexture.OnFrameAvailableListener {
 
     /**
      * Makes our EGL context and surface current.
+     * 使我们的EGL上下文和当前surface。
      */
     public void makeCurrent() {
         if (!EGL14.eglMakeCurrent(mEGLDisplay, mEGLSurface, mEGLSurface, mEGLContext)) {
@@ -222,6 +224,8 @@ class OutputSurface implements SurfaceTexture.OnFrameAvailableListener {
      * Latches the next buffer into the texture.  Must be called from the thread that created
      * the OutputSurface object, after the onFrameAvailable callback has signaled that new
      * data is available.
+     * 将下一个缓冲区锁定到纹理中。
+     * 必须在onFrameAvailable回调函数发出新数据可用的信号后，从创建OutputSurface对象的线程调用。
      */
     public void awaitNewImage() {
         final int TIMEOUT_MS = 500;

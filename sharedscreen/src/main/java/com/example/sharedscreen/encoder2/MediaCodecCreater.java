@@ -39,7 +39,7 @@ public class MediaCodecCreater extends HandlerThread {
     private static final int MSG_STOP = 2;
 
     private static final String TAG = "EncodeVirtualTest";
-    private static final boolean VERBOSE = false;           // lots of logging
+    private static final boolean VERBOSE = true;           // lots of logging
     private static final boolean DEBUG_SAVE_FILE = false;   // save copy of encoded movie
     private static final String DEBUG_FILE_NAME_BASE = Environment.getExternalStorageState() + "/vedioTest";//"/sdcard/test.";
 
@@ -60,6 +60,14 @@ public class MediaCodecCreater extends HandlerThread {
     private static final int IFRAME_INTERVAL = 10;          // 10 seconds between I-frames
     private static final int BIT_RATE = 6000000;            // 6Mbps
 
+    public DisplayManager getmDisplayManager() {
+        return mDisplayManager;
+    }
+
+    public void setmDisplayManager(DisplayManager mDisplayManager) {
+        this.mDisplayManager = mDisplayManager;
+    }
+
     private DisplayManager mDisplayManager = null;
 
     // Colors to test (RGB).  These must convert cleanly to and from BT.601 YUV.
@@ -71,6 +79,15 @@ public class MediaCodecCreater extends HandlerThread {
             makeColor(100, 10, 200),        // YCbCr 67,199,154
             makeColor(200, 100, 10),        // YCbCr 119,74,179
     };
+
+    public MediaCodecCreater(String name) {
+        super(name);
+
+    }
+
+    public void initHandler(){
+        mediaCodecHandler = new Handler(this.getLooper(), new MediaCodecCallback());
+    }
 
     /* TEST_COLORS static initialization; need ARGB for ColorDrawable */
     private static int makeColor(int red, int green, int blue) {
@@ -87,7 +104,7 @@ public class MediaCodecCreater extends HandlerThread {
     private MediaProjection mMediaProjection;
 
     //子线程的handler
-    private Handler mediaCodecHandler = new Handler(this.getLooper(), new MediaCodecCallback());
+    private Handler mediaCodecHandler =  null;//= new Handler(this.getLooper(), new MediaCodecCallback());
 
     //UI线程Handler
     private Handler mUIHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
@@ -96,7 +113,10 @@ public class MediaCodecCreater extends HandlerThread {
             switch (msg.what){
                 case MSG_START:
                 case MSG_STOP:
-                    mediaCodecHandler.sendMessage(msg);
+                    Message threadMsg = mediaCodecHandler.obtainMessage();
+                    threadMsg.what = msg.what;
+
+                    mediaCodecHandler.sendMessage(threadMsg);
                     break;
             }
 
@@ -105,11 +125,12 @@ public class MediaCodecCreater extends HandlerThread {
     });
 
 
-    public MediaCodecCreater(String name, MediaProjection mediaProjection) {
-        super(name);
+    public void setMediaProjection(MediaProjection mediaProjection){
         this.mMediaProjection = mediaProjection;
-        init();
+    }
 
+    public MediaProjection getMediaProjection(){
+        return this.mMediaProjection;
     }
 
     private MediaMuxer mMediaMuxer;
@@ -209,6 +230,8 @@ public class MediaCodecCreater extends HandlerThread {
 
     private boolean isEOS = false;
 
+
+
     public void startRecoder(){
         Message message = mUIHandler.obtainMessage();
         message.what = MSG_START;
@@ -233,7 +256,8 @@ public class MediaCodecCreater extends HandlerThread {
         }
 
         if (outputDone && started){
-
+            Log.d(TAG, "还未停止录屏");
+            return;
         }
 //        mMediaCodec.start();
 //        ByteBuffer[] inputByteBuffers = mMediaCodec.getInputBuffers();
@@ -325,9 +349,9 @@ public class MediaCodecCreater extends HandlerThread {
 
             // Create a virtual display that will output to our encoder.
             //创建一个虚拟显示，将输出到我们的编码器。
-//            virtualDisplay = mDisplayManager.createVirtualDisplay(NAME,
-//                    WIDTH, HEIGHT, DENSITY, inputSurface, 0);
-            virtualDisplay = mMediaProjection.createVirtualDisplay(NAME, WIDTH, HEIGHT, DENSITY, 0, inputSurface, null, null);
+            virtualDisplay = mDisplayManager.createVirtualDisplay(NAME,
+                    WIDTH, HEIGHT, DENSITY, inputSurface, 0);
+//            virtualDisplay = mMediaProjection.createVirtualDisplay(NAME, WIDTH, HEIGHT, DENSITY, 0, inputSurface, null, null);
 
             // We also need a decoder to check the output of the encoder.
             //我们还需要一个解码器来检查编码器的输出。
@@ -444,11 +468,19 @@ public class MediaCodecCreater extends HandlerThread {
                     // that the texture will be available before the call returns, so we
                     // need to wait for the onFrameAvailable callback to fire.  If we don't
                     // wait, we risk dropping frames.
+                    //只要我们调用releaseOutputBuffer，这个缓冲区就会被转发到SurfaceTexture来转换为一个纹理。
+                    // API不保证在调用返回之前纹理是可用的， 所以我们需要等待onFrameAvailable回调被触发。
+                    // 如果我们不等待，我们就有可能失去frames。
                     outputSurface.makeCurrent();
                     decoder.releaseOutputBuffer(decoderStatus, doRender);
                     if (doRender) {
                         if (VERBOSE) Log.d(TAG, "awaiting frame " + (lastIndex + 1));
-                        outputSurface.awaitNewImage();
+//                        outputSurface.awaitNewImage();
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         outputSurface.drawImage();
                         int foundIndex = checkSurfaceFrame();
                         if (foundIndex == lastIndex + 1) {
