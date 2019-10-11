@@ -132,6 +132,7 @@ class TextureRender {
 
     /**
      * Initializes GL state.  Call this after the EGL surface has been created and made current.
+     * 初始化GL状态。在创建并使EGL表面变为current之后调用此函数。
      */
     public void surfaceCreated() {
         mProgram = createProgram(VERTEX_SHADER, FRAGMENT_SHADER);

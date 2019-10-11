@@ -11,6 +11,8 @@ import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int SCREEN_REQUEST_CODE = 101;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
 //        initConfig();
 
         // java
-//        projectManager = (MediaProjectionManager) getSystemService(
-//                Context.MEDIA_PROJECTION_SERVICE);
+        projectManager = (MediaProjectionManager) getSystemService(
+                Context.MEDIA_PROJECTION_SERVICE);
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,10 +75,11 @@ public class MainActivity extends AppCompatActivity {
     VirtualDisplay display;
 
     // startActivityForResult()的Activity复写这个接口
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resuleData) {
         if (requestCode == SCREEN_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-//            projection = projectManager.getMediaProjection(resultCode, resuleData);
+            projection = projectManager.getMediaProjection(resultCode, resuleData);
 
             mediaCodecCreater.setMediaProjection(projection);
             mediaCodecCreater.startRecoder();
@@ -107,13 +111,14 @@ public class MainActivity extends AppCompatActivity {
 
     private ScreenRecorder mScreenRecorder;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void start() {
 
-        mediaCodecCreater.startRecoder();
+//        mediaCodecCreater.startRecoder();
 
         // 代表桌面获取的intent，并使用 startActivityForResult()调用分享功能
-//        Intent intent = projectManager.createScreenCaptureIntent();
-//        startActivityForResult(intent, SCREEN_REQUEST_CODE);
+        Intent intent = projectManager.createScreenCaptureIntent();
+        startActivityForResult(intent, SCREEN_REQUEST_CODE);
 
 //        File dir = Utils.getSavingDir();
 //        if (!dir.exists() && !dir.mkdirs()) {

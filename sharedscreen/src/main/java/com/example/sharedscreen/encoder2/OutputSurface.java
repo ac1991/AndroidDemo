@@ -84,6 +84,8 @@ class OutputSurface implements SurfaceTexture.OnFrameAvailableListener {
     /**
      * Creates instances of TextureRender and SurfaceTexture, and a Surface associated
      * with the SurfaceTexture.
+     *
+     * 创建TextureRender和SurfaceTexture实例，以及与SurfaceTexture关联的一个Surface。
      */
     private void setup() {
         mTextureRender = new TextureRender();
@@ -114,6 +116,7 @@ class OutputSurface implements SurfaceTexture.OnFrameAvailableListener {
 
     /**
      * Prepares EGL.  We want a GLES 2.0 context and a surface that supports pbuffer.
+     * EGL做准备。我们需要一个GLES 2.0上下文和一个支持pbuffer的surface。
      */
     private void eglSetup(int width, int height) {
         mEGLDisplay = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY);

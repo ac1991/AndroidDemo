@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Surface;
@@ -214,6 +215,7 @@ public class MediaCodecCreater extends HandlerThread {
     //子线程中调用
     class MediaCodecCallback implements Handler.Callback {
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public boolean handleMessage(Message msg) {
             switch (msg.what){
@@ -247,6 +249,7 @@ public class MediaCodecCreater extends HandlerThread {
     private boolean started = false;
 
     //开始录制
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void startRecoderInternal() {
         if (!started) {
             outputDone = false;
@@ -325,7 +328,9 @@ public class MediaCodecCreater extends HandlerThread {
     /**
       * Prepares the encoder, decoder, and virtual display.
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void encodeVirtualDisplayTest() {
+
         MediaCodec encoder = null;
         MediaCodec decoder = null;
         OutputSurface outputSurface = null;
@@ -349,9 +354,9 @@ public class MediaCodecCreater extends HandlerThread {
 
             // Create a virtual display that will output to our encoder.
             //创建一个虚拟显示，将输出到我们的编码器。
-            virtualDisplay = mDisplayManager.createVirtualDisplay(NAME,
-                    WIDTH, HEIGHT, DENSITY, inputSurface, 0);
-//            virtualDisplay = mMediaProjection.createVirtualDisplay(NAME, WIDTH, HEIGHT, DENSITY, 0, inputSurface, null, null);
+//            virtualDisplay = mDisplayManager.createVirtualDisplay(NAME,
+//                    WIDTH, HEIGHT, DENSITY, inputSurface, 0);
+            virtualDisplay = mMediaProjection.createVirtualDisplay(NAME, WIDTH, HEIGHT, DENSITY, 0, inputSurface, null, null);
 
             // We also need a decoder to check the output of the encoder.
             //我们还需要一个解码器来检查编码器的输出。
@@ -475,12 +480,7 @@ public class MediaCodecCreater extends HandlerThread {
                     decoder.releaseOutputBuffer(decoderStatus, doRender);
                     if (doRender) {
                         if (VERBOSE) Log.d(TAG, "awaiting frame " + (lastIndex + 1));
-//                        outputSurface.awaitNewImage();
-                        try {
-                            Thread.sleep(200);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        outputSurface.awaitNewImage();
                         outputSurface.drawImage();
                         int foundIndex = checkSurfaceFrame();
                         if (foundIndex == lastIndex + 1) {
