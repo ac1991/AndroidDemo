@@ -8,9 +8,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 public class MainActivity extends AppCompatActivity {
 
-    IjkExoMediaPlayer exoMediaPlayer;
 
-    IMediaPlayer iMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
