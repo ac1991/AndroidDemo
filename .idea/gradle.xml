@@ -3,9 +3,6 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <compositeConfiguration>
-          <compositeBuild compositeDefinitionSource="SCRIPT" />
-        </compositeConfiguration>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
@@ -13,11 +10,16 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/daggerdemo" />
+            <option value="$PROJECT_DIR$/exceldemo" />
             <option value="$PROJECT_DIR$/hotfix" />
             <option value="$PROJECT_DIR$/hotfixandroid" />
+            <option value="$PROJECT_DIR$/https" />
             <option value="$PROJECT_DIR$/ipccommunication" />
             <option value="$PROJECT_DIR$/jarlibrary" />
+            <option value="$PROJECT_DIR$/liveplayer" />
             <option value="$PROJECT_DIR$/protocolbuffer" />
+            <option value="$PROJECT_DIR$/sharedscreen" />
+            <option value="$PROJECT_DIR$/unittestdemo" />
             <option value="$PROJECT_DIR$/utils/commandutils" />
           </set>
         </option>

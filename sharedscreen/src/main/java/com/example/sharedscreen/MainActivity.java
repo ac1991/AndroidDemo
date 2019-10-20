@@ -23,6 +23,7 @@ import com.example.sharedscreen.encoder.ScreenRecorder;
 import com.example.sharedscreen.encoder.Utils;
 import com.example.sharedscreen.encoder.VideoEncodeConfig;
 import com.example.sharedscreen.encoder2.MediaCodecCreater;
+import com.example.sharedscreen.encoder3.ScreenEncoder;
 import com.example.sharedscreen.utils.MediaCodecInvocationHandlerImpl;
 
 import java.io.File;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     MediaCodecCreater mediaCodecCreater = null;
 
     private static final int SCREEN_REQUEST_CODE = 101;
+    private ScreenEncoder mScreenEncoder;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        ImageReader imageReader = ImageReader.newInstance(1080, 1920, PixelFormat.RGBA_8888, 3)
 
-        initMediaCodecCreater();
+//        initMediaCodecCreater();
 //        initConfig();
 
         // java
@@ -81,8 +83,11 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == SCREEN_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             projection = projectManager.getMediaProjection(resultCode, resuleData);
 
-            mediaCodecCreater.setMediaProjection(projection);
-            mediaCodecCreater.startRecoder();
+            if (mScreenEncoder == null){
+                mScreenEncoder = new ScreenEncoder(projection, this);
+            }
+
+            mScreenEncoder.start();
         }
 
 
@@ -90,7 +95,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stop() {
-        mediaCodecCreater.stopRecoder();
+
+        if (mScreenEncoder != null) {
+            mScreenEncoder.stop();
+        }
+//        mediaCodecCreater.stopRecoder();
 
 //        if (mScreenRecorder != null){
 //            mScreenRecorder.quit();

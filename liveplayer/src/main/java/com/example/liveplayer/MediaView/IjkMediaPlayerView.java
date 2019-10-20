@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,6 +18,8 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class IjkMediaPlayerView extends FrameLayout {
+
+    private static final String TAG = "IjkMediaPlayerView";
 
     /**
      * 由ijkplayer提供，用于播放视频，需要给他传入一个surfaceView
@@ -98,10 +101,13 @@ public class IjkMediaPlayerView extends FrameLayout {
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             //surfaceview创建成功后，加载视频
             load();
+
+            Log.d(TAG,"surfaceChanged");
         }
 
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
+            Log.d(TAG,"surfaceDestroyed");
         }
     }
 

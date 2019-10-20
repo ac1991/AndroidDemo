@@ -443,14 +443,17 @@ public class MediaCodecCreater extends HandlerThread {
                 // Start by draining any pending output from the decoder.  It's important to
                 // do this before we try to stuff any more data in.
                 int decoderStatus = decoder.dequeueOutputBuffer(info, TIMEOUT_USEC);
+                //如果超时
                 if (decoderStatus == MediaCodec.INFO_TRY_AGAIN_LATER) {
                     // no output available yet
                     if (VERBOSE) Log.d(TAG, "no output from decoder available");
                     decoderOutputAvailable = false;
+                 //如果buffers更改则需要重新制定buffers
                 } else if (decoderStatus == MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED) {
                     if (VERBOSE) Log.d(TAG, "decoder output buffers changed (but we don't care)");
                 } else if (decoderStatus == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
                     // this happens before the first frame is returned
+                    //输出格式已更改，后续数据将采用新格式
                     MediaFormat decoderOutputFormat = decoder.getOutputFormat();
                     if (VERBOSE) Log.d(TAG, "decoder output format changed: " +
                             decoderOutputFormat);
