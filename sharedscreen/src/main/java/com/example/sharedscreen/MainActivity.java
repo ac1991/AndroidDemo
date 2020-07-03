@@ -3,33 +3,23 @@ package com.example.sharedscreen;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PixelFormat;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
-import android.media.ImageReader;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.example.sharedscreen.encoder.AudioEncodeConfig;
 import com.example.sharedscreen.encoder.ScreenRecorder;
-import com.example.sharedscreen.encoder.Utils;
 import com.example.sharedscreen.encoder.VideoEncodeConfig;
 import com.example.sharedscreen.encoder2.MediaCodecCreater;
 import com.example.sharedscreen.encoder3.ScreenEncoder;
-import com.example.sharedscreen.utils.MediaCodecInvocationHandlerImpl;
-
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     MediaProjectionManager projectManager;

@@ -1,9 +1,7 @@
 package com.example.daggerdemo;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 

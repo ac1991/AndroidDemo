@@ -9,13 +9,11 @@ import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
 import android.media.MediaFormat;
 import android.media.MediaMuxer;
-import android.media.MediaRecorder;
 import android.media.projection.MediaProjection;
 import android.os.Build;
 import android.os.Environment;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Surface;
 
 import java.io.File;
@@ -151,7 +149,7 @@ public class ScreenEncoder implements IScreenEncoder {
 //            if (inputBufferId >= 0) {
 //                queueInputBuffer(mediaCodec, codecInputBuffers, inputBufferId);
 //            }
-
+            //经过编码之后的视频缓存id
             int outputBufferId = mediaCodec.dequeueOutputBuffer(bufferInfo, TIMEOUT_US);
 
             switch (outputBufferId) {
@@ -207,6 +205,7 @@ public class ScreenEncoder implements IScreenEncoder {
     }
 
     private void dequeueOutputBuffer(MediaCodec codec, ByteBuffer[] outputBuffers, int index, MediaCodec.BufferInfo info) {
+        //释放处理好的数据
         codec.releaseOutputBuffer(index, false /* render */);
     }
 

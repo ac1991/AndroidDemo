@@ -1,12 +1,11 @@
 package com.wushengqi.ipccommunication;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.wushengqi.ipccommunication.aidl.AIDLActivity;
-import com.wushengqi.ipccommunication.aidl.AIDLService;
 import com.wushengqi.ipccommunication.binder_and_service.BindServiceActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

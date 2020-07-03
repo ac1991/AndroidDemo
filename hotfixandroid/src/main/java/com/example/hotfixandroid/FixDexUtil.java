@@ -1,8 +1,9 @@
 package com.example.hotfixandroid;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Environment;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.Toast;
 
 import java.io.File;
@@ -101,7 +102,7 @@ public class FixDexUtil {
                 DexClassLoader dexLoader = new DexClassLoader(
                         dex.getAbsolutePath(),// 修复好的dex（补丁）所在目录
                         fopt.getAbsolutePath(),// 存放dex的解压目录（用于jar、zip、apk格式的补丁）
-                        null,// 加载dex时需要的库
+                        null,// 加载dex时需要的库,native库的路径，可为空
                         pathLoader// 父类加载器
                 );
                 // 3.开始合并
