@@ -24,6 +24,7 @@
             <option value="$PROJECT_DIR$/mqttdemo" />
             <option value="$PROJECT_DIR$/multiprocesskill" />
             <option value="$PROJECT_DIR$/protocolbuffer" />
+            <option value="$PROJECT_DIR$/recyclerviewdemo" />
             <option value="$PROJECT_DIR$/sharedscreen" />
             <option value="$PROJECT_DIR$/unittestdemo" />
             <option value="$PROJECT_DIR$/utils/commandutils" />
