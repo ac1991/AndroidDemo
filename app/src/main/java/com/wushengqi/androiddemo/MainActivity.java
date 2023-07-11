@@ -28,6 +28,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d("子分支提交", "");
+        Log.d("主分支提交", "");
         fix();
         initView();
 
