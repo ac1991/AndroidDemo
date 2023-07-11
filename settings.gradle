@@ -1,3 +1,4 @@
 include ':app', ':ipccommunication',':commandutils', ':protocolbuffer', ':jarlibrary', ':daggerdemo', ':hotfix', ':hotfixandroid', ':unittestdemo', ':https', ':sharedscreen', ':exceldemo', ':liveplayer', ':mqttdemo', ':websocket', ':camera'
 project(':commandutils').projectDir = new File('utils/commandutils')
 include ':multiprocesskill'
+include ':log'

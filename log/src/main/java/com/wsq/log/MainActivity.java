@@ -1,10 +1,11 @@
-package com.wushengqi.camera;
+package com.wsq.log;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,6 +13,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ViewModel model = new ViewModelProvider(this).get();
+        ExecutorService executorService;
+        ThreadPoolExecutor threadPoolExecutor ;
     }
+
+
 }
