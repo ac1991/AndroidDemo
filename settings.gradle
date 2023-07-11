@@ -3,3 +3,4 @@ project(':commandutils').projectDir = new File('utils/commandutils')
 include ':multiprocesskill'
 include ':recyclerviewdemo'
 include ':log'
+include ':recyclerviewdemo'
