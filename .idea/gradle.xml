@@ -4,16 +4,17 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="delegatedBuild" value="false" />
-        <option name="testRunner" value="PLATFORM" />
+        <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="11" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/camera" />
             <option value="$PROJECT_DIR$/daggerdemo" />
+            <option value="$PROJECT_DIR$/dnsparse" />
             <option value="$PROJECT_DIR$/exceldemo" />
             <option value="$PROJECT_DIR$/hotfix" />
             <option value="$PROJECT_DIR$/hotfixandroid" />
@@ -21,6 +22,7 @@
             <option value="$PROJECT_DIR$/ipccommunication" />
             <option value="$PROJECT_DIR$/jarlibrary" />
             <option value="$PROJECT_DIR$/liveplayer" />
+            <option value="$PROJECT_DIR$/log" />
             <option value="$PROJECT_DIR$/mqttdemo" />
             <option value="$PROJECT_DIR$/multiprocesskill" />
             <option value="$PROJECT_DIR$/protocolbuffer" />
@@ -31,7 +33,6 @@
             <option value="$PROJECT_DIR$/websocket" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
