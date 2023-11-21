@@ -16,7 +16,7 @@ public class DNSParse {
             domain = handleDomain(domain);
             InetAddress[] addresses = InetAddress.getAllByName(domain);
             for (InetAddress address : addresses) {
-//                Log.d("DNSParse","IP Address: " + address.getHostAddress());
+                Log.d("DNSParse","IP Address: " + address.getHostAddress());
                 ipList.add(address.getHostAddress());
             }
         } catch (UnknownHostException e) {

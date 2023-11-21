@@ -1,9 +1,15 @@
 package com.xzl.websocket;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 
 import com.xzl.client.WebSocketManager;
 import com.xzl.client.XZLWebSocketListener;
@@ -19,6 +25,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initWebSocket();
+//        LayoutInflater.from(this).inflate()
+        getLifecycle().addObserver(new LifecycleEventObserver() {
+            @Override
+            public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+
+            }
+        });
 
     }
 

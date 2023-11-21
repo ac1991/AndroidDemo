@@ -32,6 +32,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         fix();
         initView();
 
+
+
     }
 
     private void initView(){

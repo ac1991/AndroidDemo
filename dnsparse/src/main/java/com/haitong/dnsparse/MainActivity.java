@@ -28,8 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void run() {
-                    List<String>  domainList = ExcelReader.readerUrlFromExcel(getApplicationContext(), "app域名.xls");
-
+//                    List<String>  domainList = ExcelReader.readerUrlFromExcel(getApplicationContext(), "app域名.xls");
+                    List<String>  domainList = new ArrayList<>();
+                    domainList.add("https://blog.csdn.net/");
                     ArrayMap<String, List<String>>  datas = new ArrayMap<>();
 
                     for (String domain: domainList){

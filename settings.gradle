@@ -6,3 +6,9 @@ include ':log'
 include ':recyclerviewdemo'
 include ':dnsparse'
 include ':dnsparse'
+include ':httpdns'
+include ':flutterdemo'
+project(':flutterdemo').projectDir = new File('flutter/flutterdemo')
+//倒入flutter插件
+//setBinding(new Binding([gradle: this]))
+//evaluate(new File("/Users/cc/Documents/wushengqi/flutterplugin/.android/include_flutter.groovy"))
